@@ -61,15 +61,17 @@ def apply_async_with_callback():
     if len(all_dfs) > 0:
         total_df = pd.concat(all_dfs)
         total_df['datetime'] = total_df.apply(lambda row: f'{row.date} {row.time}', axis=1)
-        print(total_df.head())
         csv_file = f'iis_logs_{time.time()}.csv'
         total_df.to_csv(csv_file, index=False)
+        print(f'saved data to {csv_file}')
         return csv_file
 
 def sort_dataframe(csv_file):
     df = pd.read_csv(csv_file)
     df = df.sort_values(by=['date', 'time'], ascending=True)
-    df.to_csv(csv_file.replace('iis_logs', 'iis_logs_sorted'), index=False)
+    sorted_file = csv_file.replace('iis_logs', 'iis_logs_sorted')
+    df.to_csv(sorted_file, index=False)
+    print(f'saved sorted data to {sorted_file}')
 
 if __name__ == "__main__":
     csv_file = apply_async_with_callback()
